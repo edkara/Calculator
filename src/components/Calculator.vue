@@ -26,65 +26,47 @@ export default {
     },
     writeNumber(number) {
       if (this.operatorClicked) {
+        this.current='';
         this.operatorClicked = false;
-        // this.current = `${this.current}${this.previous}`;
-        console.log(`${this.current}:CURRENT`);
       }
       this.current = `${this.current}${number}`;
-      console.log(`${this.current}:CURRENT`);
-      console.log(`${this.previous} :PREVIOUS`);
-      console.log(
-        `${this.current.charAt(
-          this.current.length - 1
-        )}: LAST NUMBER FROM CURRENT`
-      );
     },
-    //indexOf returns the position of the first occurence of a value in a string
-    //when dot doesn't exist
-    //probleme mit double operation
     doubleOperation() {
-      if (this.current.indexOf(".") !== -1) {
-        this.writeNumber(".");
-      } else {
-        this.current = '0';
+      if (this.current.indexOf(".") === -1) {
         this.writeNumber(".");
       }
     },
 
     setPrevious() {
-      this.previous = this.current.slice(0, -1);
+      this.previous = this.current;
       this.operatorClicked = true;
     },
     appendOperation() {
       this.current = `${this.current}${this.operation}`;
     },
     divideOperation() {
-      this.operation = "/";
-      this.appendOperation();
-      this.setPrevious();
       this.result = (a, b) => b / a;
+      this.setPrevious();
     },
     multiplyOperation() {
-      this.operation = "*";
-      this.appendOperation();
+      this.result = (a, b) => a * b;
       this.setPrevious();
-      this.result = (a, b) => b * a;
     },
     addOperation() {
-      this.operation = "+";
-      this.appendOperation();
+      this.result = (a, b) => a + b;
       this.setPrevious();
-      this.result = (a, b) => b + a;
     },
     subOperation() {
-      this.operation = "-";
-      this.appendOperation();
-      this.setPrevious();
       this.result = (a, b) => b - a;
+      console.log(this.current);
+      console.log(this.previous);
+      this.setPrevious();
+      console.log(this.current);
+      console.log(this.previous);
     },
     equalOperation() {
       this.current = `${this.result(
-        parseFloat(this.current.charAt(this.current.length - 1)),
+        parseFloat(this.current),
         parseFloat(this.previous)
       )}`;
       this.previous = null;
